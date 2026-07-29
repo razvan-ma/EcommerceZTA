@@ -1,0 +1,4 @@
+-r services/product/requirements.txt
+httpx==0.28.1
+pytest==8.3.4
+
