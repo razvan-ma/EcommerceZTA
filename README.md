@@ -6,7 +6,7 @@ Planning artifacts for the Zero-Trust E-commerce Platform master's thesis.
 
 The project has completed the initial requirements and threat-model phase. The provisional implementation direction is the balanced Zero-Trust track: local Kubernetes, Istio, Keycloak, OPA/Rego, PostgreSQL, and OpenTelemetry.
 
-The implementation language is Python/FastAPI. M0 currently contains a deterministic Product service with health checks, contract tests, a container image definition, and a Kubernetes manifest.
+The implementation language is Python/FastAPI. M1 now includes deterministic Product, Cart, and Order services with health checks, contract tests, container image definitions, and Kubernetes manifests.
 
 - [Scope and requirements](docs/01-scope-and-requirements.md)
 - [Threat model](docs/02-threat-model.md)
@@ -24,5 +24,22 @@ make run-product
 ```
 
 Then open `http://127.0.0.1:8000/docs` or query `http://127.0.0.1:8000/products`.
+
+To build and deploy the current baseline services:
+
+```bash
+make build-services
+make k8s-deploy
+```
+
+## Kubernetes
+
+Kubernetes support is configured for Docker Desktop's managed kind-mode cluster. See [the Kubernetes guide](deploy/kubernetes/README.md), or run:
+
+```bash
+make k8s-deploy
+make k8s-status
+make k8s-product
+```
 - Source outline: [Semester 2 annotated table of contents](Cuprins_Semestrul_2.pdf)
 - Source draft: [Dissertation draft](Disertatie.pdf)
