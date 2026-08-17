@@ -6,5 +6,5 @@ venv/
 dist/
 build/
 .DS_Store
-.pdf
+*.pdf
 
