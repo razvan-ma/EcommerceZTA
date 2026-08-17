@@ -1,0 +1,96 @@
+imagePullPolicy: IfNotPresent
+
+service:
+  port: 8000
+  targetPort: http
+
+probes:
+  readiness:
+    path: /health/ready
+    initialDelaySeconds: 2
+    periodSeconds: 5
+  liveness:
+    path: /health/live
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+postgres:
+  enabled: true
+  image: postgres:16-alpine
+  database: ecommerce
+  username: zta
+  password: zta-dev-password
+  storage: 1Gi
+
+keycloak:
+  enabled: true
+  image: quay.io/keycloak/keycloak:26.3
+  adminUsername: admin
+  adminPassword: admin-dev-password
+  realm: ecommerce
+  clientId: ecommerce-ui
+  customerUsername: customer-1
+  customerPassword: customer-dev-password
+
+services:
+  product:
+    image:
+      repository: ecommerce-zta/product
+      tag: "0.2.0"
+    env:
+      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+  cart:
+    image:
+      repository: ecommerce-zta/cart
+      tag: "0.2.1"
+    env:
+      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+      ORDER_SERVICE_URL: http://order:8000
+      PRODUCT_SERVICE_URL: http://product:8000
+  order:
+    image:
+      repository: ecommerce-zta/order
+      tag: "0.2.1"
+    env:
+      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+      INVENTORY_SERVICE_URL: http://inventory:8000
+      PAYMENT_SERVICE_URL: http://payment:8000
+      NOTIFICATION_SERVICE_URL: http://notification:8000
+  inventory:
+    image:
+      repository: ecommerce-zta/inventory
+      tag: "0.2.0"
+    env:
+      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+  payment:
+    image:
+      repository: ecommerce-zta/payment
+      tag: "0.2.0"
+    env:
+      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+  notification:
+    image:
+      repository: ecommerce-zta/notification
+      tag: "0.2.0"
+    env:
+      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+  frontend:
+    image:
+      repository: ecommerce-zta/frontend
+      tag: "0.2.0"
+    env:
+      PRODUCT_SERVICE_URL: http://product:8000
+      CART_SERVICE_URL: http://cart:8000
+      AUTH_REQUIRED: "true"
+      KEYCLOAK_TOKEN_URL: http://keycloak:8080/realms/ecommerce/protocol/openid-connect/token
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/ecommerce
+      KEYCLOAK_JWKS_URL: http://keycloak:8080/realms/ecommerce/protocol/openid-connect/certs
+      KEYCLOAK_CLIENT_ID: ecommerce-ui

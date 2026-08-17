@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ecommerce-platform
+description: Baseline Zero-Trust e-commerce microservices platform
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

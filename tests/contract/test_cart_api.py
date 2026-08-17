@@ -12,15 +12,37 @@ class FakeOrderClient:
             "status": "created",
         }
 
+    async def reserve(self, order_id: str) -> dict:
+        return {
+            "id": order_id,
+            "customer_id": "customer-1",
+            "status": "inventory_reserved",
+        }
+
+    async def confirm(self, order_id: str) -> dict:
+        return {
+            "id": order_id,
+            "customer_id": "customer-1",
+            "status": "confirmed",
+        }
+
+
+class FakeProductClient:
+    async def get_product(self, product_id: str) -> dict:
+        return {"id": product_id, "price_cents": 4999}
+
 
 @pytest.fixture(autouse=True)
 def reset_cart_state():
     main.CARTS.clear()
     previous_client = main.app.state.order_client
+    previous_product_client = main.app.state.product_client
     main.app.state.order_client = FakeOrderClient()
+    main.app.state.product_client = FakeProductClient()
     yield
     main.CARTS.clear()
     main.app.state.order_client = previous_client
+    main.app.state.product_client = previous_product_client
 
 
 client = TestClient(main.app)
@@ -39,7 +61,9 @@ def test_cart_can_add_and_remove_item() -> None:
         json={"product_id": "p-001", "quantity": 2},
     )
     assert added.status_code == 200
-    assert added.json()["items"] == [{"product_id": "p-001", "quantity": 2}]
+    assert added.json()["items"] == [
+        {"product_id": "p-001", "quantity": 2, "unit_price_cents": 4999}
+    ]
 
     removed = client.delete("/carts/customer-1/items/p-001")
     assert removed.status_code == 200
@@ -65,6 +89,5 @@ def test_checkout_submits_cart_to_order_service() -> None:
     assert response.json() == {
         "order_id": "order-test-0001",
         "customer_id": "customer-1",
-        "status": "created",
+        "status": "confirmed",
     }
-

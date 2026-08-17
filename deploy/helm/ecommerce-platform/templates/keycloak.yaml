@@ -1,0 +1,82 @@
+{{- if .Values.keycloak.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-realm
+  labels:
+    {{- include "ecommerce-platform.labels" . | nindent 4 }}
+data:
+  ecommerce-realm.json: |
+    {{- .Files.Get "files/ecommerce-realm.json" | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+    {{- include "ecommerce-platform.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+    {{- include "ecommerce-platform.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+        {{- include "ecommerce-platform.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: keycloak
+          image: {{ .Values.keycloak.image | quote }}
+          imagePullPolicy: IfNotPresent
+          args: ["start-dev", "--import-realm"]
+          env:
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: {{ .Values.keycloak.adminUsername | quote }}
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              value: {{ .Values.keycloak.adminPassword | quote }}
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_HTTP_PORT
+              value: "8080"
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 9000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          volumeMounts:
+            - name: realm
+              mountPath: /opt/keycloak/data/import/ecommerce-realm.json
+              subPath: ecommerce-realm.json
+      volumes:
+        - name: realm
+          configMap:
+            name: keycloak-realm
+{{- end }}

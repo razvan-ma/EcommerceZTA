@@ -1,0 +1,42 @@
+{
+  "realm": "ecommerce",
+  "enabled": true,
+  "displayName": "E-commerce Development Realm",
+  "roles": {
+    "realm": [
+      { "name": "customer", "description": "E-commerce customer" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "ecommerce-ui",
+      "name": "E-commerce UI",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "clientAuthenticatorType": "none",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    }
+  ],
+  "users": [
+    {
+      "username": "customer-1",
+      "enabled": true,
+      "firstName": "Customer",
+      "lastName": "One",
+      "email": "customer-1@example.test",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "customer-dev-password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["customer"]
+    }
+  ]
+}

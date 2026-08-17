@@ -6,7 +6,7 @@ Planning artifacts for the Zero-Trust E-commerce Platform master's thesis.
 
 The project has completed the initial requirements and threat-model phase. The provisional implementation direction is the balanced Zero-Trust track: local Kubernetes, Istio, Keycloak, OPA/Rego, PostgreSQL, and OpenTelemetry.
 
-The implementation language is Python/FastAPI. M1 now includes deterministic Product, Cart, and Order services with health checks, contract tests, container image definitions, and Kubernetes manifests.
+The implementation language is Python/FastAPI. The baseline includes deterministic Product, Cart, Order, Inventory, Payment, and Notification services with health checks, contract tests, container image definitions, and Kubernetes manifests. The Helm deployment includes PostgreSQL and a local Keycloak realm; all six business services can use PostgreSQL, while the frontend enforces Keycloak login and cart ownership for the browser flow.
 
 - [Scope and requirements](docs/01-scope-and-requirements.md)
 - [Threat model](docs/02-threat-model.md)
@@ -30,6 +30,15 @@ To build and deploy the current baseline services:
 ```bash
 make build-services
 make k8s-deploy
+```
+
+The same baseline, plus a small browser frontend, is also packaged as a Helm chart. Render it
+without changing the cluster, or install/upgrade it in the active local
+Kubernetes context:
+
+```bash
+make helm-template
+make helm-deploy
 ```
 
 ## Kubernetes

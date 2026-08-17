@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zero-Trust E-commerce</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; color: #25232a; background: #faf9fc; }
+    header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 1rem; }
+    h1 { margin: 0; color: #4a00a8; }
+    .auth { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
+    .customer { display: flex; align-items: center; gap: .5rem; }
+    input { border: 1px solid #bbb; border-radius: .35rem; padding: .5rem; }
+    main { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    section { background: white; border: 1px solid #e3e0e8; border-radius: .6rem; padding: 1rem; }
+    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .75rem; }
+    article { border: 1px solid #e3e0e8; border-radius: .5rem; padding: .8rem; }
+    article h3 { margin: 0 0 .35rem; }
+    article p { min-height: 2.5rem; color: #65616b; font-size: .9rem; }
+    button { border: 0; border-radius: .35rem; padding: .55rem .75rem; color: white; background: #4a00a8; cursor: pointer; }
+    button.secondary { background: #77717f; }
+    button:disabled { opacity: .55; cursor: wait; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin: .55rem 0; }
+    .cart-item { border-bottom: 1px solid #eee; padding-bottom: .5rem; }
+    .muted, #status { color: #65616b; }
+    #status { min-height: 1.5rem; margin-top: 1rem; }
+    @media (max-width: 700px) { main { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Zero-Trust E-commerce</h1>
+      <div class="muted">Product, cart, and checkout demonstrator</div>
+    </div>
+    <div>
+      <form id="login" class="auth" onsubmit="login(event)">
+        <input id="username" value="customer-1" autocomplete="username" aria-label="Username">
+        <input id="password" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password">
+        <button type="submit">Sign in</button>
+      </form>
+      <div class="auth" style="justify-content: flex-end; margin-top: .4rem;">
+        <label class="customer">Customer <input id="customer" value="customer-1" maxlength="64"></label>
+        <button type="button" class="secondary" onclick="signout()">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="status" role="status"></div>
+  <main>
+    <section>
+      <h2>Products</h2>
+      <div id="products" class="products"><span class="muted">Loading catalog...</span></div>
+    </section>
+    <section>
+      <h2>Cart</h2>
+      <div id="cart"><span class="muted">Loading cart...</span></div>
+      <button id="checkout" onclick="checkout()">Checkout</button>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const money = (cents, currency = 'EUR') => `${(cents / 100).toFixed(2)} ${currency}`;
+    const customer = () => $('customer').value.trim() || 'customer-1';
+    const token = () => sessionStorage.getItem('access_token');
+    const setStatus = (message, error = false) => { $('status').textContent = message; $('status').style.color = error ? '#a11' : ''; };
+
+    async function api(path, options = {}) {
+      const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+      if (token()) headers.Authorization = `Bearer ${token()}`;
+      const response = await fetch(path, { ...options, headers });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || 'Request failed');
+      return data;
+    }
+
+    async function login(event) {
+      event.preventDefault();
+      try {
+        const result = await api('/api/login', {
+          method: 'POST',
+          body: JSON.stringify({ username: $('username').value, password: $('password').value }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        sessionStorage.setItem('access_token', result.access_token);
+        $('password').value = '';
+        $('customer').value = $('username').value;
+        setStatus('Signed in.');
+        await start();
+      } catch (error) { setStatus(error.message, true); }
+    }
+
+    function signout() {
+      sessionStorage.removeItem('access_token');
+      $('products').innerHTML = '<span class="muted">Sign in to load the catalog.</span>';
+      $('cart').innerHTML = '<span class="muted">Sign in to load your cart.</span>';
+      $('checkout').disabled = true;
+      setStatus('Signed out.');
+    }
+
+    function renderProducts(data) {
+      $('products').innerHTML = data.items.map((product) => `
+        <article>
+          <h3>${product.name}</h3>
+          <div><strong>${money(product.price_cents, product.currency)}</strong></div>
+          <p>${product.description}</p>
+          <div class="row"><input id="qty-${product.id}" type="number" min="1" max="100" value="1" aria-label="Quantity"></div>
+          <button onclick="addToCart('${product.id}')">Add to cart</button>
+        </article>`).join('');
+    }
+
+    function renderCart(cart) {
+      if (!cart.items.length) {
+        $('cart').innerHTML = '<p class="muted">Your cart is empty.</p>';
+        $('checkout').disabled = true;
+        return;
+      }
+      let total = 0;
+      $('cart').innerHTML = cart.items.map((item) => {
+        total += item.quantity * item.unit_price_cents;
+        return `<div class="cart-item row"><span>${item.product_id} × ${item.quantity}</span><button class="secondary" onclick="removeFromCart('${item.product_id}')">Remove</button></div>`;
+      }).join('') + `<p><strong>Total: ${money(total)}</strong></p>`;
+      $('checkout').disabled = false;
+    }
+
+    async function loadCart() { renderCart(await api(`/api/cart/${encodeURIComponent(customer())}`)); }
+    async function addToCart(productId) {
+      try {
+        const quantity = Number($(`qty-${productId}`).value);
+        renderCart(await api(`/api/cart/${encodeURIComponent(customer())}/items`, { method: 'PUT', body: JSON.stringify({ product_id: productId, quantity }) }));
+        setStatus('Item added to cart.');
+      } catch (error) { setStatus(error.message, true); }
+    }
+    async function removeFromCart(productId) {
+      try { renderCart(await api(`/api/cart/${encodeURIComponent(customer())}/items/${productId}`, { method: 'DELETE' })); }
+      catch (error) { setStatus(error.message, true); }
+    }
+    async function checkout() {
+      $('checkout').disabled = true;
+      try {
+        const result = await api(`/api/cart/${encodeURIComponent(customer())}/checkout`, { method: 'POST' });
+        setStatus(`Order ${result.order_id} confirmed.`);
+        await loadCart();
+      } catch (error) { setStatus(error.message, true); $('checkout').disabled = false; }
+    }
+    $('customer').addEventListener('change', () => loadCart().catch((error) => setStatus(error.message, true)));
+    async function start() {
+      if (!token()) {
+        $('products').innerHTML = '<span class="muted">Sign in to load the catalog.</span>';
+        $('cart').innerHTML = '<span class="muted">Sign in to load your cart.</span>';
+        $('checkout').disabled = true;
+        return;
+      }
+      try { await Promise.all([api('/api/products').then(renderProducts), loadCart()]); }
+      catch (error) { setStatus(error.message, true); }
+    }
+    start();
+  </script>
+</body>
+</html>
