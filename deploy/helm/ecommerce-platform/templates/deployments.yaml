@@ -17,13 +17,25 @@ spec:
         app: {{ $name }}
         {{- include "ecommerce-platform.labels" $ | nindent 8 }}
     spec:
+      serviceAccountName: {{ $name }}
       containers:
         - name: {{ $name }}
           image: "{{ $config.image.repository }}:{{ $config.image.tag }}"
           imagePullPolicy: {{ $.Values.imagePullPolicy }}
-          {{- with $config.env }}
+          {{- if or $config.env $config.database }}
           env:
-            {{- range $key, $value := . }}
+            {{- if $config.database }}
+            # Each service connects as its own least-privilege role, which can
+            # only reach its own schema (see db-bootstrap-job.yaml).
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-{{ $name }}
+                  key: password
+            - name: DATABASE_URL
+              value: "postgresql://{{ include "ecommerce-platform.dbRole" $name }}:$(DB_PASSWORD)@postgres:5432/{{ $.Values.postgres.database }}"
+            {{- end }}
+            {{- range $key, $value := $config.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
@@ -31,18 +43,29 @@ spec:
           ports:
             - name: http
               containerPort: 8000
+          startupProbe:
+            httpGet:
+              path: {{ $.Values.probes.startup.path }}
+              port: http
+            periodSeconds: {{ $.Values.probes.startup.periodSeconds }}
+            timeoutSeconds: {{ $.Values.probes.startup.timeoutSeconds }}
+            failureThreshold: {{ $.Values.probes.startup.failureThreshold }}
           readinessProbe:
             httpGet:
               path: {{ $.Values.probes.readiness.path }}
               port: http
             initialDelaySeconds: {{ $.Values.probes.readiness.initialDelaySeconds }}
             periodSeconds: {{ $.Values.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ $.Values.probes.readiness.timeoutSeconds }}
+            failureThreshold: {{ $.Values.probes.readiness.failureThreshold }}
           livenessProbe:
             httpGet:
               path: {{ $.Values.probes.liveness.path }}
               port: http
             initialDelaySeconds: {{ $.Values.probes.liveness.initialDelaySeconds }}
             periodSeconds: {{ $.Values.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ $.Values.probes.liveness.timeoutSeconds }}
+            failureThreshold: {{ $.Values.probes.liveness.failureThreshold }}
           resources:
             {{- toYaml $.Values.resources | nindent 12 }}
 ---

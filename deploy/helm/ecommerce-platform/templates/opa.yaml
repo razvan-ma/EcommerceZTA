@@ -1,0 +1,85 @@
+{{- if .Values.opa.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-policy
+  labels:
+    app: opa
+    {{- include "ecommerce-platform.labels" . | nindent 4 }}
+data:
+  ecommerce_authz.rego: |
+    {{- .Files.Get "files/policies/ecommerce_authz.rego" | nindent 4 }}
+  system_authz.rego: |
+    {{- .Files.Get "files/policies/system_authz.rego" | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  labels:
+    app: opa
+    {{- include "ecommerce-platform.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: opa
+  ports:
+    - name: http-policy
+      port: 8181
+      targetPort: http-policy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa
+  labels:
+    app: opa
+    {{- include "ecommerce-platform.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opa
+  template:
+    metadata:
+      annotations:
+        checksum/policy: {{ printf "%s%s" (.Files.Get "files/policies/ecommerce_authz.rego") (.Files.Get "files/policies/system_authz.rego") | sha256sum }}
+      labels:
+        app: opa
+        {{- include "ecommerce-platform.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: opa
+      containers:
+        - name: opa
+          image: {{ .Values.opa.image | quote }}
+          imagePullPolicy: IfNotPresent
+          # --authorization=basic makes OPA evaluate system.authz for every
+          # call to its REST API (decision endpoint and /health only).
+          args: ["run", "--server", "--addr=:8181", "--authorization=basic", "--ignore=.*", "/policies"]
+          ports:
+            - name: http-policy
+              containerPort: 8181
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http-policy
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http-policy
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            {{- toYaml .Values.opa.resources | nindent 12 }}
+          volumeMounts:
+            - name: policy
+              mountPath: /policies
+              readOnly: true
+      volumes:
+        - name: policy
+          configMap:
+            name: opa-policy
+{{- end }}

@@ -41,6 +41,45 @@ make helm-template
 make helm-deploy
 ```
 
+## Authorization policy
+
+The frontend validates Keycloak access tokens and asks Open Policy Agent (OPA)
+whether each protected action is allowed. The deployed policy permits customers
+to read the catalog and access only their own cart; support and admin roles have
+the additional access described in
+[`ecommerce_authz.rego`](deploy/helm/ecommerce-platform/files/policies/ecommerce_authz.rego).
+OPA failures are treated as denials, so authorization fails closed.
+
+Run the policy tests without changing the cluster:
+
+```bash
+make test-opa
+```
+
+Changing the policy and running `make helm-deploy` updates the ConfigMap and
+rolls the OPA pod automatically.
+
+## Zero-Trust hardening
+
+- **Mesh:** strict mTLS plus default-deny Istio policies that allow only named
+  operations (caller + method + route). See [the Istio guide](deploy/istio/README.md).
+- **OPA API:** only the decision endpoint and `/health` are reachable, both
+  through the mesh and through OPA's own `system.authz` policy.
+- **Data plane:** each service uses its own PostgreSQL role and schema.
+- **Credentials:** generated per deployment into Kubernetes Secrets. None are
+  kept in `values.yaml`.
+
+Apply the mesh policy before the chart, so the database bootstrap Job can
+reach PostgreSQL:
+
+```bash
+make istio-policies
+make helm-deploy
+```
+
+`make test` includes static checks of the mesh policy matrix and of the Helm
+values, so neither needs a cluster.
+
 ## Kubernetes
 
 Kubernetes support is configured for Docker Desktop's managed kind-mode cluster. See [the Kubernetes guide](deploy/kubernetes/README.md), or run:

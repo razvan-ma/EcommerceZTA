@@ -120,6 +120,34 @@ class ServiceClient:
             raise HTTPException(status_code=502, detail="upstream service unavailable") from exc
 
 
+class OpaClient:
+    """Fail-closed policy-decision client for the in-mesh OPA service."""
+
+    def __init__(self, base_url: str) -> None:
+        self.base_url = base_url.rstrip("/")
+        self.required = os.getenv("OPA_REQUIRED", "false").lower() == "true"
+
+    async def decide(self, policy_input: dict[str, Any]) -> dict[str, Any]:
+        if not self.base_url:
+            if self.required:
+                raise HTTPException(status_code=503, detail="authorization service is not configured")
+            # Local unit-test mode only. Helm always enables OPA_REQUIRED.
+            return {"allow": True, "reason": "OPA disabled for local development"}
+        try:
+            async with httpx.AsyncClient(base_url=self.base_url, timeout=3.0) as client:
+                response = await client.post(
+                    "/v1/data/ecommerce/authz/decision", json={"input": policy_input}
+                )
+            response.raise_for_status()
+            decision = response.json().get("result")
+            if not isinstance(decision, dict) or not isinstance(decision.get("allow"), bool):
+                raise ValueError("OPA returned an invalid decision")
+            return decision
+        except (httpx.HTTPError, ValueError) as exc:
+            # A policy outage must never turn into an authorization bypass.
+            raise HTTPException(status_code=503, detail="authorization service unavailable") from exc
+
+
 app = FastAPI(
     title="Zero-Trust E-commerce - Web UI",
     version="0.1.0",
@@ -128,6 +156,7 @@ app = FastAPI(
 app.state.auth = KeycloakAuth()
 app.state.product_client = ServiceClient(os.getenv("PRODUCT_SERVICE_URL", "http://product:8000"))
 app.state.cart_client = ServiceClient(os.getenv("CART_SERVICE_URL", "http://cart:8000"))
+app.state.opa_client = OpaClient(os.getenv("OPA_URL", ""))
 INDEX_HTML = (
     Path(__file__).resolve().parent / "static" / "index.html"
 ).read_text(encoding="utf-8")
@@ -155,15 +184,40 @@ async def login(credentials: LoginInput) -> dict[str, Any]:
 
 async def _authenticated_customer(request: Request, customer_id: str) -> dict[str, Any]:
     claims = await request.app.state.auth.authenticate(request)
-    username = claims.get("preferred_username") or claims.get("sub")
-    if username != customer_id:
-        raise HTTPException(status_code=403, detail="customer does not own this cart")
+    await _authorize(
+        request,
+        claims,
+        action="cart:access",
+        resource={"type": "cart", "customer_id": customer_id},
+    )
     return claims
+
+
+async def _authorize(
+    request: Request, claims: dict[str, Any], action: str, resource: dict[str, str]
+) -> None:
+    username = claims.get("preferred_username") or claims.get("sub")
+    realm_access = claims.get("realm_access", {})
+    roles = realm_access.get("roles", []) if isinstance(realm_access, dict) else []
+    decision = await request.app.state.opa_client.decide(
+        {
+            "subject": {
+                "id": claims.get("sub"),
+                "username": username,
+                "roles": roles if isinstance(roles, list) else [],
+            },
+            "action": action,
+            "resource": resource,
+        }
+    )
+    if not decision["allow"]:
+        raise HTTPException(status_code=403, detail=decision.get("reason", "access denied by policy"))
 
 
 @app.get("/api/products", tags=["ui"])
 async def products(request: Request) -> Any:
-    await request.app.state.auth.authenticate(request)
+    claims = await request.app.state.auth.authenticate(request)
+    await _authorize(request, claims, action="catalog:read", resource={"type": "catalog"})
     return await app.state.product_client.request("GET", "/products")
 
 
