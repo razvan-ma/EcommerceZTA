@@ -87,7 +87,13 @@ Kubernetes support is configured for Docker Desktop's managed kind-mode cluster.
 ```bash
 make k8s-deploy
 make k8s-status
-make k8s-product
+make k8s-frontend
 ```
+
+`make k8s-frontend` serves the shop at http://localhost:8080. It forwards only
+to the frontend on purpose: a `kubectl port-forward` enters a pod on loopback and
+skips the mesh's authorization policy, so forwarding straight to a backend service
+would bypass the Zero-Trust controls. Who may port-forward is therefore a
+Kubernetes RBAC decision (`pods/portforward`), outside the mesh.
 - Source outline: [Semester 2 annotated table of contents](Cuprins_Semestrul_2.pdf)
 - Source draft: [Dissertation draft](Disertatie.pdf)

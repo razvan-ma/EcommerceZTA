@@ -1,6 +1,6 @@
 ISTIOCTL ?= istioctl
 
-.PHONY: install test test-opa run-product build-product build-cart build-order build-inventory build-payment build-notification build-frontend build-services deploy-product k8s-context k8s-status k8s-deploy k8s-product helm-template helm-deploy istio-enable istio-policies istio-status
+.PHONY: install test test-opa run-product build-product build-cart build-order build-inventory build-payment build-notification build-frontend build-services deploy-product k8s-context k8s-status k8s-deploy k8s-frontend helm-template helm-deploy istio-enable istio-policies istio-status
 
 install:
 	python3 -m pip install -r requirements-dev.txt
@@ -59,8 +59,12 @@ k8s-deploy: k8s-context
 	kubectl rollout status deployment/order --timeout=120s
 	kubectl rollout status deployment/cart --timeout=120s
 
-k8s-product:
-	kubectl port-forward service/product 8000:8000
+# Open the shop at http://localhost:8080. The frontend authenticates every
+# request with Keycloak and authorizes it with OPA. Port-forwards enter the
+# pod on loopback and bypass Istio's AuthorizationPolicy, so only forward to
+# the frontend, never directly to backend services.
+k8s-frontend:
+	kubectl port-forward service/frontend 8080:8000
 
 helm-template:
 	helm template ecommerce-platform ./deploy/helm/ecommerce-platform
