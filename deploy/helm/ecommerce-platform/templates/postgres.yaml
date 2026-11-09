@@ -1,14 +1,6 @@
 {{- if .Values.postgres.enabled }}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-credentials
-  labels:
-    {{- include "ecommerce-platform.labels" . | nindent 4 }}
-type: Opaque
-data:
-  password: {{ .Values.postgres.password | b64enc | quote }}
----
+# The admin password lives in the generated postgres-credentials Secret
+# (templates/secrets.yaml). Only the db-bootstrap Job uses the admin role.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -33,7 +25,7 @@ spec:
   selector:
     app: postgres
   ports:
-    - name: postgres
+    - name: tcp-postgres
       port: 5432
       targetPort: postgres
 ---
@@ -55,6 +47,7 @@ spec:
         app: postgres
         {{- include "ecommerce-platform.labels" . | nindent 8 }}
     spec:
+      serviceAccountName: postgres
       containers:
         - name: postgres
           image: {{ .Values.postgres.image | quote }}

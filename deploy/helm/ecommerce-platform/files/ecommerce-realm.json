@@ -4,7 +4,9 @@
   "displayName": "E-commerce Development Realm",
   "roles": {
     "realm": [
-      { "name": "customer", "description": "E-commerce customer" }
+      { "name": "customer", "description": "E-commerce customer" },
+      { "name": "support", "description": "Support staff" },
+      { "name": "admin", "description": "E-commerce administrator" }
     ]
   },
   "clients": [

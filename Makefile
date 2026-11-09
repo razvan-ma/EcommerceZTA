@@ -1,10 +1,15 @@
-.PHONY: install test run-product build-product build-cart build-order build-inventory build-payment build-notification build-frontend build-services deploy-product k8s-context k8s-status k8s-deploy k8s-product helm-template helm-deploy
+ISTIOCTL ?= istioctl
+
+.PHONY: install test test-opa run-product build-product build-cart build-order build-inventory build-payment build-notification build-frontend build-services deploy-product k8s-context k8s-status k8s-deploy k8s-product helm-template helm-deploy istio-enable istio-policies istio-status
 
 install:
 	python3 -m pip install -r requirements-dev.txt
 
 test:
 	python3 -m pytest
+
+test-opa:
+	docker run --rm -v "$(CURDIR)/deploy/helm/ecommerce-platform/files/policies:/policies:ro" openpolicyagent/opa:1.21.3 test /policies
 
 run-product:
 	python3 -m uvicorn services.product.app.main:app --reload --port 8000
@@ -28,7 +33,7 @@ build-notification:
 	docker build -t ecommerce-zta/notification:0.2.0 services/notification
 
 build-frontend:
-	docker build -t ecommerce-zta/frontend:0.2.0 services/frontend
+	docker build -t ecommerce-zta/frontend:0.2.1 services/frontend
 
 build-services: build-product build-cart build-order build-inventory build-payment build-notification build-frontend
 
@@ -63,3 +68,18 @@ helm-template:
 helm-deploy: k8s-context
 	# These flags support migration from existing kubectl-managed manifests.
 	helm upgrade --install ecommerce-platform ./deploy/helm/ecommerce-platform --take-ownership --force-conflicts
+
+istio-enable:
+	kubectl label namespace default istio-injection=enabled --overwrite
+	kubectl rollout restart deployment
+	kubectl rollout status deployment --all --timeout=180s
+
+istio-policies:
+	kubectl apply -f deploy/istio/security.yaml
+	# ALLOW policies are OR-ed, so stale broad policies from earlier versions
+	# would silently keep granting access. Remove them explicitly.
+	kubectl delete authorizationpolicy allow-cart-to-product-order allow-order-to-inventory-payment-notification --ignore-not-found
+
+istio-status:
+	kubectl get pods -o wide
+	$(ISTIOCTL) proxy-status

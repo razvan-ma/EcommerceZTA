@@ -1,0 +1,298 @@
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: default
+spec:
+  mtls:
+    mode: STRICT
+---
+# PostgreSQL uses a raw TCP protocol. Pin the client-side TLS mode so its
+# workload sidecars always establish Istio mTLS before the database receives
+# any application bytes.
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: postgres-istio-mutual
+  namespace: default
+spec:
+  host: postgres.default.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: default
+spec: {}
+---
+# Kubernetes probes are rewritten by Istio and remain available for health
+# checking without granting application routes to arbitrary callers.
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-health-probes
+  namespace: default
+spec:
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            methods: ["GET"]
+            paths: ["/health", "/health/live", "/health/ready"]
+            ports: ["8000", "8181", "9000"]
+---
+# Public entry point. Every request is still authenticated (Keycloak) and
+# authorized (OPA) by the frontend itself.
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-frontend-ingress
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            ports: ["8000"]
+---
+# Every business edge below is one named operation from
+# docs/04-service-contracts-and-policies.md: caller identity + method + route.
+# `{*}` matches exactly one path segment.
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-frontend-to-product
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: product
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/frontend"]
+      to:
+        - operation:
+            methods: ["GET"]
+            paths: ["/products"]
+            ports: ["8000"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-cart-to-product
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: product
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/cart"]
+      to:
+        - operation:
+            methods: ["GET"]
+            paths: ["/products/{*}"]
+            ports: ["8000"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-frontend-to-cart
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: cart
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/frontend"]
+      to:
+        - operation:
+            methods: ["GET"]
+            paths: ["/carts/{*}"]
+            ports: ["8000"]
+        - operation:
+            methods: ["PUT"]
+            paths: ["/carts/{*}/items"]
+            ports: ["8000"]
+        - operation:
+            methods: ["DELETE"]
+            paths: ["/carts/{*}/items/{*}"]
+            ports: ["8000"]
+        - operation:
+            methods: ["POST"]
+            paths: ["/carts/{*}/checkout"]
+            ports: ["8000"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-cart-to-order
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: order
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/cart"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/orders", "/orders/{*}/reserve", "/orders/{*}/confirm"]
+            ports: ["8000"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-order-to-inventory
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: inventory
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/order"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/reservations"]
+            ports: ["8000"]
+        - operation:
+            methods: ["DELETE"]
+            paths: ["/reservations/{*}"]
+            ports: ["8000"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-order-to-payment
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: payment
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/order"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/authorizations"]
+            ports: ["8000"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-order-to-notification
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: notification
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/order"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/events/order"]
+            ports: ["8000"]
+---
+# The frontend may only log users in and fetch signing keys. The Keycloak
+# admin console and admin REST API stay unreachable from the mesh.
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-frontend-to-keycloak
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: keycloak
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/frontend"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/realms/ecommerce/protocol/openid-connect/token"]
+            ports: ["8080"]
+        - operation:
+            methods: ["GET"]
+            paths: ["/realms/ecommerce/protocol/openid-connect/certs"]
+            ports: ["8080"]
+---
+# Only the decision endpoint is reachable. Policy/data management APIs
+# (PUT /v1/policies, PUT /v1/data, ...) are denied here and again by OPA's
+# own system.authz policy.
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-frontend-to-opa
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: opa
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/frontend"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/v1/data/ecommerce/authz/decision"]
+            ports: ["8181"]
+---
+# PostgreSQL is TCP, so the mesh can only check caller identity and port.
+# Table-level isolation is enforced by per-service database roles
+# (see templates/db-bootstrap-job.yaml in the Helm chart).
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-database-clients
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals:
+              - "cluster.local/ns/default/sa/product"
+              - "cluster.local/ns/default/sa/cart"
+              - "cluster.local/ns/default/sa/order"
+              - "cluster.local/ns/default/sa/inventory"
+              - "cluster.local/ns/default/sa/payment"
+              - "cluster.local/ns/default/sa/notification"
+              - "cluster.local/ns/default/sa/db-bootstrap"
+      to:
+        - operation:
+            ports: ["5432"]

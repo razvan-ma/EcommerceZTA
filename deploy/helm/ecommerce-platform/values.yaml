@@ -5,14 +5,23 @@ service:
   targetPort: http
 
 probes:
+  startup:
+    path: /health/live
+    periodSeconds: 5
+    timeoutSeconds: 5
+    failureThreshold: 18
   readiness:
     path: /health/ready
-    initialDelaySeconds: 2
+    initialDelaySeconds: 5
     periodSeconds: 5
+    timeoutSeconds: 5
+    failureThreshold: 3
   liveness:
     path: /health/live
-    initialDelaySeconds: 5
+    initialDelaySeconds: 15
     periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
 
 resources:
   requests:
@@ -22,45 +31,73 @@ resources:
     cpu: 250m
     memory: 256Mi
 
+# Credentials are not configured here. Helm generates them into Kubernetes
+# Secrets (templates/secrets.yaml) and reuses them on upgrade.
 postgres:
   enabled: true
   image: postgres:16-alpine
   database: ecommerce
+  # Admin role, used only by the db-bootstrap Job. Services use svc_<name> roles.
   username: zta
-  password: zta-dev-password
   storage: 1Gi
 
 keycloak:
   enabled: true
   image: quay.io/keycloak/keycloak:26.3
   adminUsername: admin
-  adminPassword: admin-dev-password
   realm: ecommerce
   clientId: ecommerce-ui
-  customerUsername: customer-1
-  customerPassword: customer-dev-password
+  # The test user (customer-1) and its test password are defined in
+  # files/ecommerce-realm.json as a development fixture.
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+  ports:
+    - name: http
+      port: 8069
+      targetPort: 8080
 
+opa:
+  enabled: true
+  image: openpolicyagent/opa:1.21.3
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# `database.tables` lists the tables a service owns. Each service gets its own
+# role and schema (svc_<name>); the db-bootstrap Job moves these tables out of
+# the shared public schema on first upgrade.
 services:
   product:
     image:
       repository: ecommerce-zta/product
       tag: "0.2.0"
-    env:
-      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+    database:
+      tables: [products]
   cart:
     image:
       repository: ecommerce-zta/cart
       tag: "0.2.1"
+    database:
+      tables: [carts, cart_items]
     env:
-      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
       ORDER_SERVICE_URL: http://order:8000
       PRODUCT_SERVICE_URL: http://product:8000
   order:
     image:
       repository: ecommerce-zta/order
       tag: "0.2.1"
+    database:
+      tables: [orders]
     env:
-      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
       INVENTORY_SERVICE_URL: http://inventory:8000
       PAYMENT_SERVICE_URL: http://payment:8000
       NOTIFICATION_SERVICE_URL: http://notification:8000
@@ -68,24 +105,24 @@ services:
     image:
       repository: ecommerce-zta/inventory
       tag: "0.2.0"
-    env:
-      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+    database:
+      tables: [inventory_stock, reservations, reservation_items]
   payment:
     image:
       repository: ecommerce-zta/payment
       tag: "0.2.0"
-    env:
-      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+    database:
+      tables: [payment_authorizations]
   notification:
     image:
       repository: ecommerce-zta/notification
       tag: "0.2.0"
-    env:
-      DATABASE_URL: postgresql://zta:zta-dev-password@postgres:5432/ecommerce
+    database:
+      tables: [notifications]
   frontend:
     image:
       repository: ecommerce-zta/frontend
-      tag: "0.2.0"
+      tag: "0.2.1"
     env:
       PRODUCT_SERVICE_URL: http://product:8000
       CART_SERVICE_URL: http://cart:8000
@@ -94,3 +131,5 @@ services:
       KEYCLOAK_ISSUER: http://keycloak:8080/realms/ecommerce
       KEYCLOAK_JWKS_URL: http://keycloak:8080/realms/ecommerce/protocol/openid-connect/certs
       KEYCLOAK_CLIENT_ID: ecommerce-ui
+      OPA_URL: http://opa:8181
+      OPA_REQUIRED: "true"
