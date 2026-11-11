@@ -1,3 +1,4 @@
+import httpx
 import pytest
 from fastapi.testclient import TestClient
 
@@ -5,6 +6,9 @@ from services.cart.app import main
 
 
 class FakeOrderClient:
+    def __init__(self) -> None:
+        self.reserve_status: int | None = None
+
     async def submit(self, cart: main.Cart) -> dict:
         return {
             "id": "order-test-0001",
@@ -13,6 +17,13 @@ class FakeOrderClient:
         }
 
     async def reserve(self, order_id: str) -> dict:
+        if self.reserve_status:
+            request = httpx.Request("POST", "http://order/reserve")
+            raise httpx.HTTPStatusError(
+                "refused",
+                request=request,
+                response=httpx.Response(self.reserve_status, request=request),
+            )
         return {
             "id": order_id,
             "customer_id": "customer-1",
@@ -91,3 +102,26 @@ def test_checkout_submits_cart_to_order_service() -> None:
         "customer_id": "customer-1",
         "status": "confirmed",
     }
+
+
+def test_successful_checkout_empties_the_cart() -> None:
+    client.put("/carts/customer-1/items", json={"product_id": "p-001", "quantity": 1})
+
+    assert client.post("/carts/customer-1/checkout").status_code == 201
+
+    assert client.get("/carts/customer-1").json()["items"] == []
+    # The same items cannot be bought twice.
+    assert client.post("/carts/customer-1/checkout").status_code == 400
+
+
+def test_refused_checkout_keeps_the_cart() -> None:
+    main.app.state.order_client.reserve_status = 409
+    client.put("/carts/customer-1/items", json={"product_id": "p-001", "quantity": 1})
+
+    response = client.post("/carts/customer-1/checkout")
+
+    assert response.status_code == 409
+    assert response.json() == {"detail": "insufficient inventory"}
+    assert [item["product_id"] for item in client.get("/carts/customer-1").json()["items"]] == [
+        "p-001"
+    ]

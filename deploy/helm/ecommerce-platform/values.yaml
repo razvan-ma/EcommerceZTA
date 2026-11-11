@@ -85,7 +85,7 @@ services:
   cart:
     image:
       repository: ecommerce-zta/cart
-      tag: "0.2.1"
+      tag: "0.2.2"
     database:
       tables: [carts, cart_items]
     env:
