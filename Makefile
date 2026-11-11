@@ -21,7 +21,7 @@ build-cart:
 	docker build -t ecommerce-zta/cart:0.2.1 services/cart
 
 build-order:
-	docker build -t ecommerce-zta/order:0.2.1 services/order
+	docker build -t ecommerce-zta/order:0.2.2 services/order
 
 build-inventory:
 	docker build -t ecommerce-zta/inventory:0.2.0 services/inventory
