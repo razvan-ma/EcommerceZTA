@@ -33,7 +33,7 @@ build-notification:
 	docker build -t ecommerce-zta/notification:0.2.0 services/notification
 
 build-frontend:
-	docker build -t ecommerce-zta/frontend:0.2.1 services/frontend
+	docker build -t ecommerce-zta/frontend:0.2.3 services/frontend
 
 build-services: build-product build-cart build-order build-inventory build-payment build-notification build-frontend
 

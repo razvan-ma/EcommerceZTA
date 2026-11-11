@@ -122,7 +122,7 @@ services:
   frontend:
     image:
       repository: ecommerce-zta/frontend
-      tag: "0.2.1"
+      tag: "0.2.3"
     env:
       PRODUCT_SERVICE_URL: http://product:8000
       CART_SERVICE_URL: http://cart:8000
