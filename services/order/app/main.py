@@ -227,6 +227,12 @@ class InventoryClient:
         response.raise_for_status()
         return response.json()
 
+    async def release(self, reservation_id: str) -> dict:
+        async with httpx.AsyncClient(base_url=self.base_url, timeout=5.0) as client:
+            response = await client.delete(f"/reservations/{reservation_id}")
+        response.raise_for_status()
+        return response.json()
+
 
 class PaymentClient:
     def __init__(self, base_url: str) -> None:
@@ -322,16 +328,31 @@ def get_order(order_id: str) -> Order:
     return order
 
 
+# Order lifecycle:
+#   created -> inventory_reserved -> payment_authorized -> confirmed
+#   created -> rejected      (inventory refused: not enough stock)
+#   inventory_reserved -> cancelled       (payment failed, stock released)
+#   inventory_reserved -> release_failed  (payment failed, stock still held)
+# rejected, cancelled and release_failed are final.
+
+
 @app.post("/orders/{order_id}/reserve", response_model=Order, tags=["orders"])
 async def reserve_order(order_id: str) -> Order:
     order = app.state.order_repository.get(order_id)
     if order is None:
         raise HTTPException(status_code=404, detail="order not found")
+    # Reserving twice would hold the stock twice.
+    if order.status in ("inventory_reserved", "payment_authorized", "confirmed"):
+        return order
+    if order.status != "created":
+        raise HTTPException(status_code=409, detail=f"order is {order.status}")
 
     try:
         reservation = await app.state.inventory_client.reserve(order)
     except httpx.HTTPStatusError as exc:
         if exc.response.status_code == 409:
+            order.status = "rejected"
+            app.state.order_repository.save(order)
             raise HTTPException(status_code=409, detail="insufficient inventory") from exc
         raise HTTPException(status_code=502, detail="inventory service unavailable") from exc
     except (httpx.HTTPError, ValueError) as exc:
@@ -342,6 +363,17 @@ async def reserve_order(order_id: str) -> Order:
     return app.state.order_repository.save(order)
 
 
+async def _release_reservation(order: Order) -> None:
+    """Give reserved stock back after payment failed, and record the outcome."""
+    try:
+        await app.state.inventory_client.release(order.reservation_id)
+        order.status = "cancelled"
+    except (httpx.HTTPError, ValueError):
+        # Stock is still held; the status makes the leak visible for follow-up.
+        order.status = "release_failed"
+    app.state.order_repository.save(order)
+
+
 @app.post("/orders/{order_id}/confirm", response_model=Order, tags=["orders"])
 async def confirm_order(order_id: str) -> Order:
     order = app.state.order_repository.get(order_id)
@@ -349,16 +381,20 @@ async def confirm_order(order_id: str) -> Order:
         raise HTTPException(status_code=404, detail="order not found")
     if order.status == "confirmed":
         return order
-    if order.status != "inventory_reserved":
+    if order.status not in ("inventory_reserved", "payment_authorized"):
         raise HTTPException(status_code=409, detail="inventory must be reserved before confirmation")
 
-    try:
-        payment = await app.state.payment_client.authorize(order)
-    except (httpx.HTTPError, ValueError) as exc:
-        raise HTTPException(status_code=502, detail="payment service unavailable") from exc
+    if order.status == "inventory_reserved":
+        try:
+            payment = await app.state.payment_client.authorize(order)
+        except (httpx.HTTPError, ValueError) as exc:
+            await _release_reservation(order)
+            raise HTTPException(status_code=502, detail="payment service unavailable") from exc
+        order.payment_id = payment["id"]
+        order.status = "payment_authorized"
+        # Saved before notifying, so a retry never authorizes the payment twice.
+        app.state.order_repository.save(order)
 
-    order.payment_id = payment["id"]
-    order.status = "payment_authorized"
     try:
         notification = await app.state.notification_client.publish(order)
     except (httpx.HTTPError, ValueError) as exc:

@@ -62,6 +62,12 @@ class InMemoryCartRepository:
         cart.items = [item for item in cart.items if item.product_id != product_id]
         return cart
 
+    def remove_ordered(self, customer_id: str, ordered: List[CartItem]) -> Cart:
+        cart = self.get(customer_id)
+        keys = {(item.product_id, item.quantity) for item in ordered}
+        cart.items = [item for item in cart.items if (item.product_id, item.quantity) not in keys]
+        return cart
+
 
 class PostgresCartRepository:
     def __init__(self, database_url: str) -> None:
@@ -136,6 +142,18 @@ class PostgresCartRepository:
                 "DELETE FROM cart_items WHERE customer_id = %s AND product_id = %s",
                 (customer_id, product_id),
             )
+        return self.get(customer_id)
+
+    def remove_ordered(self, customer_id: str, ordered: List[CartItem]) -> Cart:
+        with psycopg.connect(self.database_url) as connection:
+            for item in ordered:
+                connection.execute(
+                    """
+                    DELETE FROM cart_items
+                    WHERE customer_id = %s AND product_id = %s AND quantity = %s
+                    """,
+                    (customer_id, item.product_id, item.quantity),
+                )
         return self.get(customer_id)
 
 
@@ -278,6 +296,11 @@ async def checkout(customer_id: str, request: Request) -> CheckoutResponse:
         raise HTTPException(status_code=502, detail="order service unavailable") from exc
     except (httpx.HTTPError, ValueError) as exc:
         raise HTTPException(status_code=502, detail="order service unavailable") from exc
+
+    # The order now owns these items. Remove exactly what was ordered, so a
+    # second checkout cannot buy them again and items added meanwhile stay.
+    if order["status"] == "confirmed":
+        request.app.state.cart_repository.remove_ordered(customer_id, cart.items)
 
     return CheckoutResponse(
         order_id=order["id"],

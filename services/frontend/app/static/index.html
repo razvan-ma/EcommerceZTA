@@ -36,8 +36,8 @@
     </div>
     <div>
       <form id="login" class="auth" onsubmit="login(event)">
-        <input id="username" value="customer-1" autocomplete="username" aria-label="Username">
-        <input id="password" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password">
+        <input id="username" value="customer-1" autocomplete="username" aria-label="Username" required>
+        <input id="password" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password" required>
         <button type="submit">Sign in</button>
       </form>
       <div class="auth" style="justify-content: flex-end; margin-top: .4rem;">
@@ -67,37 +67,79 @@
     const token = () => sessionStorage.getItem('access_token');
     const setStatus = (message, error = false) => { $('status').textContent = message; $('status').style.color = error ? '#a11' : ''; };
 
+    // Access tokens are short-lived (Keycloak default: 5 minutes) so that a
+    // leaked token is only useful briefly. When one expires the user signs in
+    // again; the page never keeps sending a token the server has rejected.
+    const SESSION_EXPIRED = 'Your session expired. Please sign in again.';
+    let expiryTimer;
+
+    function tokenExpiresAt(jwt) {
+      try {
+        const payload = JSON.parse(atob(jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+        return payload.exp * 1000;
+      } catch { return 0; }
+    }
+
+    function scheduleExpiry() {
+      clearTimeout(expiryTimer);
+      if (!token()) return;
+      const remaining = tokenExpiresAt(token()) - Date.now();
+      expiryTimer = setTimeout(() => signout(SESSION_EXPIRED, true), Math.max(0, remaining));
+    }
+
     async function api(path, options = {}) {
       const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
-      if (token()) headers.Authorization = `Bearer ${token()}`;
+      const sentToken = options.auth !== false && token();
+      if (sentToken) headers.Authorization = `Bearer ${sentToken}`;
       const response = await fetch(path, { ...options, headers });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.detail || 'Request failed');
+      // The server checks expiry itself, so this also covers a wrong client clock.
+      if (response.status === 401 && sentToken) {
+        signout(SESSION_EXPIRED, true);
+        throw new Error(SESSION_EXPIRED);
+      }
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(errorMessage(data.detail));
       return data;
+    }
+
+    // FastAPI returns validation errors (422) as a list of objects.
+    function errorMessage(detail) {
+      if (typeof detail === 'string' && detail) return detail;
+      if (Array.isArray(detail) && detail.length) {
+        return detail.map((d) => `${(d.loc || []).slice(-1)[0] || 'request'}: ${d.msg}`).join('; ');
+      }
+      return 'Request failed';
     }
 
     async function login(event) {
       event.preventDefault();
+      const submit = $('login').querySelector('button[type="submit"]');
+      if (submit.disabled) return;
+      submit.disabled = true;
       try {
         const result = await api('/api/login', {
           method: 'POST',
           body: JSON.stringify({ username: $('username').value, password: $('password').value }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          auth: false
         });
         sessionStorage.setItem('access_token', result.access_token);
+        scheduleExpiry();
         $('password').value = '';
         $('customer').value = $('username').value;
         setStatus('Signed in.');
         await start();
       } catch (error) { setStatus(error.message, true); }
+      finally { submit.disabled = false; }
     }
 
-    function signout() {
+    function signout(message = 'Signed out.', error = false) {
+      clearTimeout(expiryTimer);
       sessionStorage.removeItem('access_token');
       $('products').innerHTML = '<span class="muted">Sign in to load the catalog.</span>';
       $('cart').innerHTML = '<span class="muted">Sign in to load your cart.</span>';
       $('checkout').disabled = true;
-      setStatus('Signed out.');
+      setStatus(message, error);
     }
 
     function renderProducts(data) {
@@ -147,12 +189,14 @@
     }
     $('customer').addEventListener('change', () => loadCart().catch((error) => setStatus(error.message, true)));
     async function start() {
+      if (token() && tokenExpiresAt(token()) <= Date.now()) signout(SESSION_EXPIRED, true);
       if (!token()) {
         $('products').innerHTML = '<span class="muted">Sign in to load the catalog.</span>';
         $('cart').innerHTML = '<span class="muted">Sign in to load your cart.</span>';
         $('checkout').disabled = true;
         return;
       }
+      scheduleExpiry();
       try { await Promise.all([api('/api/products').then(renderProducts), loadCart()]); }
       catch (error) { setStatus(error.message, true); }
     }
