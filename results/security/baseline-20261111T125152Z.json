@@ -1,0 +1,2501 @@
+{
+  "variant": "baseline",
+  "namespace": "ecommerce-baseline",
+  "repeat": 10,
+  "started": "2026-11-11T12:51:52+00:00",
+  "finished": "2026-11-11T12:56:59+00:00",
+  "environment": {
+    "git_commit": "7d3c79f-dirty",
+    "images": {
+      "cart": "ecommerce-zta/cart:0.2.2",
+      "frontend": "ecommerce-zta/frontend:0.2.3",
+      "inventory": "ecommerce-zta/inventory:0.2.0",
+      "keycloak": "quay.io/keycloak/keycloak:26.3",
+      "notification": "ecommerce-zta/notification:0.2.0",
+      "order": "ecommerce-zta/order:0.2.2",
+      "payment": "ecommerce-zta/payment:0.2.0",
+      "postgres": "postgres:16-alpine",
+      "product": "ecommerce-zta/product:0.2.0"
+    },
+    "istio_sidecar": false,
+    "config_sha256": {
+      "values.yaml": "96ec16599d6a0744",
+      "values-baseline.yaml": "246bd6ff19148a64",
+      "istio/security.yaml": "aafa3ac65ad88fc8",
+      "ecommerce_authz.rego": "8665a0b10ba490f0"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "C-01",
+      "threat": "-",
+      "title": "Customer browses the catalog",
+      "source": "external",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 22.0,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 81.8,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 16.1,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 16.1,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 16.1,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 13.3,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 47.5,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 13.2,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 19.9,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 15.9,
+          "cleanup_status": null,
+          "body": "{\"items\":[{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true},{\"id\":\"p-002\",\"name\":\"Encrypted Notebook\",\"description\":\"A second deterministic product for contract tests.\",\"price_cents\":1299,\"curr"
+        }
+      ]
+    },
+    {
+      "id": "C-02",
+      "threat": "-",
+      "title": "Customer reads their own cart",
+      "source": "external",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 50.7,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 16.0,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 14.1,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 13.5,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 12.8,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 40.5,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 13.2,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 10.7,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 10.3,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 14.0,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        }
+      ]
+    },
+    {
+      "id": "C-03",
+      "threat": "-",
+      "title": "Cart service looks up a product price (allowed edge)",
+      "source": "cart",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 77.3,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.9,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.3,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.7,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.1,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.0,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.5,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.1,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.1,
+          "cleanup_status": null,
+          "body": "{\"id\":\"p-001\",\"name\":\"Zero Trust Hoodie\",\"description\":\"A catalog item for the platform demonstrator.\",\"price_cents\":4999,\"currency\":\"EUR\",\"available\":true}"
+        }
+      ]
+    },
+    {
+      "id": "C-04",
+      "threat": "-",
+      "title": "Customer checks out their own cart (once per run)",
+      "source": "external",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 1
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 211.8,
+          "cleanup_status": null,
+          "body": "{\"order_id\":\"order-0002\",\"customer_id\":\"customer-1\",\"status\":\"confirmed\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-01a",
+      "threat": "TM-01",
+      "title": "Compromised product creates a payment authorization",
+      "source": "product",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 23.8,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 8.1,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 8.5,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 5.1,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 4.8,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 4.6,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 5.4,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 36.4,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 5.2,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 4.7,
+          "cleanup_status": null,
+          "body": "{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-01b",
+      "threat": "TM-01",
+      "title": "Compromised product lists all payment authorizations",
+      "source": "product",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.4,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.2,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.3,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.8,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.3,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.5,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.2,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 54.0,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.1,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.8,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        }
+      ]
+    },
+    {
+      "id": "TM-01c",
+      "threat": "TM-01",
+      "title": "Compromised product reads payment table with its DB login",
+      "source": "product",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 11.2,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 5.9,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 29.4,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 49.5,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 10.1,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 7.3,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 8.8,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 9.9,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 61.4,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 6.4,
+          "cleanup_status": null,
+          "body": "SELECT * FROM public.payment_authorizations LIMIT 5 -> 2 rows (rolled back)"
+        }
+      ]
+    },
+    {
+      "id": "TM-02a",
+      "threat": "TM-02",
+      "title": "Compromised cart reserves stock without an order",
+      "source": "cart",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 11.0,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0004\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 8.6,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0005\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 5.9,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0006\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 5.9,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0007\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 6.7,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0008\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 6.4,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0009\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 4.4,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0010\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 4.2,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0011\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 4.9,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0012\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 201,
+          "error": "",
+          "ms": 53.1,
+          "cleanup_status": 200,
+          "body": "{\"id\":\"reservation-0013\",\"order_id\":\"attack-tm02\",\"items\":[{\"product_id\":\"p-003\",\"quantity\":1}],\"status\":\"reserved\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-02b",
+      "threat": "TM-02",
+      "title": "Compromised product rewrites stock levels in the database",
+      "source": "product",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 7.5,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 6.5,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 13.1,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 11.6,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 8.4,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 48.1,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 6.6,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 7.2,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 5.7,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": "ok",
+          "error": "",
+          "ms": 6.2,
+          "cleanup_status": null,
+          "body": "UPDATE public.inventory_stock SET available = available + 1000 -> 3 rows (rolled back)"
+        }
+      ]
+    },
+    {
+      "id": "TM-03a",
+      "threat": "TM-03",
+      "title": "Customer reads another customer's cart",
+      "source": "external",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 11.1,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 40.5,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 11.3,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 11.5,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 12.3,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 10.0,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 51.8,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 13.4,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 14.9,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 14.1,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[]}"
+        }
+      ]
+    },
+    {
+      "id": "TM-03b",
+      "threat": "TM-03",
+      "title": "Customer adds an item to another customer's cart",
+      "source": "external",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 41.9,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 39.6,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 51.6,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 23.8,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 64.9,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 48.1,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 25.2,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 33.3,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 32.8,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 39.1,
+          "cleanup_status": 200,
+          "body": "{\"customer_id\":\"customer-2\",\"items\":[{\"product_id\":\"p-001\",\"quantity\":1,\"unit_price_cents\":4999}]}"
+        }
+      ]
+    },
+    {
+      "id": "TM-04a",
+      "threat": "TM-04",
+      "title": "Request without a token",
+      "source": "external",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 10
+      },
+      "layers": {
+        "application": 10
+      },
+      "runs": [
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.1,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.5,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.6,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.6,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.5,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"Bearer token required\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-04b",
+      "threat": "TM-04",
+      "title": "Malformed token",
+      "source": "external",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 10
+      },
+      "layers": {
+        "application": 10
+      },
+      "runs": [
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.5,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.4,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.6,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.8,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.8,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-04c",
+      "threat": "TM-04",
+      "title": "Real token with the username changed to the victim",
+      "source": "external",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 10
+      },
+      "layers": {
+        "application": 10
+      },
+      "runs": [
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.1,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.6,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.5,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.1,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.1,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-04d",
+      "threat": "TM-04",
+      "title": "Unsigned token (alg=none)",
+      "source": "external",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 10
+      },
+      "layers": {
+        "application": 10
+      },
+      "runs": [
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.4,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 35.8,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.5,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"unknown token key\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-04e",
+      "threat": "TM-04",
+      "title": "Token signed with an attacker-chosen HS256 key",
+      "source": "external",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 10
+      },
+      "layers": {
+        "application": 10
+      },
+      "runs": [
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.4,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 2.1,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.5,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.5,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 6.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 1.8,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-04f",
+      "threat": "TM-04",
+      "title": "Valid Keycloak token issued to another client (admin-cli)",
+      "source": "external",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 10
+      },
+      "layers": {
+        "application": 10
+      },
+      "runs": [
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.8,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 1.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.1,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.3,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.4,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.6,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 403,
+          "error": "",
+          "ms": 2.8,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"token was not issued to this client\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-05a",
+      "threat": "TM-05",
+      "title": "Pod without mesh identity reads a customer cart",
+      "source": "attacker-no-mesh",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 17.6,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.9,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 59.6,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 6.7,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.0,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.6,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.9,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.9,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.8,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.5,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        }
+      ]
+    },
+    {
+      "id": "TM-05b",
+      "threat": "TM-05",
+      "title": "Pod without mesh identity lists payment authorizations",
+      "source": "attacker-no-mesh",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 6.3,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.1,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.6,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 10.3,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.9,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.6,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.9,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        }
+      ]
+    },
+    {
+      "id": "TM-05c",
+      "threat": "TM-05",
+      "title": "Pod with an untrusted mesh identity reads a customer cart",
+      "source": "attacker-mesh",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 93.1,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.0,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.8,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.9,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.9,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.3,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.3,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 5.7,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.7,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "{\"customer_id\":\"customer-1\",\"items\":[]}"
+        }
+      ]
+    },
+    {
+      "id": "TM-06a",
+      "threat": "TM-06",
+      "title": "Compromised cart lists a customer's orders (may only create)",
+      "source": "cart",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 7.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.2,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.6,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.2,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.6,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.5,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.4,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"order-0001\",\"customer_id\":\"customer-1\",\"items\":[{\"product_id\":\"p-002\",\"quantity\":1,\"unit_price_cents\":1299}],\"source_cart_id\":\"customer-1\",\"total_cents\":1299,\"status\":\"confirmed\",\"reservation_id\":\"reservation-0003\",\"payment_id\":\"payment-0002\",\"notification_id\":\"notification-0001\"}]"
+        }
+      ]
+    },
+    {
+      "id": "TM-06b",
+      "threat": "TM-06",
+      "title": "Compromised order lists payments (may only authorize)",
+      "source": "order",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 91.4,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.3,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.1,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.1,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.9,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 3.7,
+          "cleanup_status": null,
+          "body": "[{\"id\":\"payment-0001\",\"order_id\":\"attack-tm01\",\"customer_id\":\"customer-1\",\"amount_cents\":1,\"currency\":\"EUR\",\"status\":\"authorized\"},{\"id\":\"payment-0002\",\"order_id\":\"order-0001\",\"customer_id\":\"customer-1\",\"amount_cents\":1299,\"currency\":\"EUR\",\"status\":\"authorized\"}]"
+        }
+      ]
+    },
+    {
+      "id": "TM-06c",
+      "threat": "TM-06",
+      "title": "Compromised product opens the Keycloak admin console",
+      "source": "product",
+      "expected": "allowed",
+      "outcome": "allowed",
+      "counts": {
+        "allowed": 10
+      },
+      "layers": {},
+      "runs": [
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 159.9,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 86.6,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 15.1,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 65.1,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 14.8,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 29.7,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 61.1,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 13.9,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 19.6,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        },
+        {
+          "outcome": "allowed",
+          "layer": "-",
+          "status": 200,
+          "error": "",
+          "ms": 64.9,
+          "cleanup_status": null,
+          "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/resources/pu2j0/admin/keycloak.v2/favicon.svg\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"color-scheme\" content=\"light dark\">\n    <meta"
+        }
+      ]
+    },
+    {
+      "id": "TM-06d",
+      "threat": "TM-06",
+      "title": "Compromised product uploads a policy to OPA",
+      "source": "product",
+      "expected": "n/a",
+      "outcome": "n/a",
+      "counts": {},
+      "layers": {},
+      "runs": []
+    },
+    {
+      "id": "TM-07",
+      "threat": "TM-07",
+      "title": "Protected request while the policy engine is down",
+      "source": "external",
+      "expected": "n/a",
+      "outcome": "n/a",
+      "counts": {},
+      "layers": {},
+      "runs": []
+    },
+    {
+      "id": "TM-04g",
+      "threat": "TM-04",
+      "title": "Replay of an expired token",
+      "source": "external",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 10
+      },
+      "layers": {
+        "application": 10
+      },
+      "runs": [
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 131.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 6.6,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 6.8,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 8.2,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.0,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.9,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 3.1,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        },
+        {
+          "outcome": "blocked",
+          "layer": "application",
+          "status": 401,
+          "error": "",
+          "ms": 4.7,
+          "cleanup_status": null,
+          "body": "{\"detail\":\"invalid access token\"}"
+        }
+      ]
+    },
+    {
+      "id": "TM-09",
+      "threat": "TM-09",
+      "title": "Credentials or tokens in container logs",
+      "source": "logs",
+      "expected": "blocked",
+      "outcome": "blocked",
+      "counts": {
+        "blocked": 1
+      },
+      "layers": {
+        "logging": 1
+      },
+      "runs": [],
+      "scan": {
+        "status": "clean",
+        "pods_scanned": 11,
+        "findings": []
+      }
+    }
+  ]
+}
