@@ -1,0 +1,23 @@
+# Baseline variant for the Zero-Trust comparison (thesis experiment).
+#
+# Same images, data, resources and Keycloak sign-in as the Zero-Trust variant;
+# only the Zero-Trust controls are removed, giving a perimeter-style setup
+# where being inside the cluster is treated as enough to be trusted:
+#   - no Istio sidecars (namespace label istio-injection=disabled), so no mTLS
+#     and no mesh authorization: any pod can call any service route;
+#   - no OPA: the frontend still authenticates every request with Keycloak,
+#     but any signed-in user may act on any customer_id;
+#   - one shared database login for all services instead of svc_<name> roles.
+#
+# Deploy with `make baseline-deploy` (namespace ecommerce-baseline).
+database:
+  perServiceRoles: false
+
+opa:
+  enabled: false
+
+services:
+  frontend:
+    env:
+      OPA_URL: ""
+      OPA_REQUIRED: "false"

@@ -1,4 +1,4 @@
-{{- if .Values.postgres.enabled }}
+{{- if and .Values.postgres.enabled .Values.database.perServiceRoles }}
 {{- $db := .Values.postgres.database }}
 # Data-plane least privilege: one PostgreSQL role and schema per service.
 # A service's role owns only its own schema, so a compromised workload that
