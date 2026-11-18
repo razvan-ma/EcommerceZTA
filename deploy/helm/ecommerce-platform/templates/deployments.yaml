@@ -24,7 +24,7 @@ spec:
           imagePullPolicy: {{ $.Values.imagePullPolicy }}
           {{- if or $config.env $config.database }}
           env:
-            {{- if $config.database }}
+            {{- if and $config.database $.Values.database.perServiceRoles }}
             # Each service connects as its own least-privilege role, which can
             # only reach its own schema (see db-bootstrap-job.yaml).
             - name: DB_PASSWORD
@@ -34,6 +34,15 @@ spec:
                   key: password
             - name: DATABASE_URL
               value: "postgresql://{{ include "ecommerce-platform.dbRole" $name }}:$(DB_PASSWORD)@postgres:5432/{{ $.Values.postgres.database }}"
+            {{- else if $config.database }}
+            # Baseline variant: every service shares the admin login.
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: DATABASE_URL
+              value: "postgresql://{{ $.Values.postgres.username }}:$(DB_PASSWORD)@postgres:5432/{{ $.Values.postgres.database }}"
             {{- end }}
             {{- range $key, $value := $config.env }}
             - name: {{ $key }}

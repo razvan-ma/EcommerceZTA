@@ -1,6 +1,6 @@
 ISTIOCTL ?= istioctl
 
-.PHONY: install test test-opa run-product build-product build-cart build-order build-inventory build-payment build-notification build-frontend build-services deploy-product k8s-context k8s-status k8s-deploy k8s-frontend helm-template helm-deploy istio-enable istio-policies istio-status
+.PHONY: install test test-opa run-product build-product build-cart build-order build-inventory build-payment build-notification build-frontend build-services deploy-product k8s-context k8s-status k8s-deploy k8s-frontend helm-template helm-deploy baseline-deploy baseline-frontend baseline-delete security-test istio-enable istio-policies istio-status
 
 install:
 	python3 -m pip install -r requirements-dev.txt
@@ -72,6 +72,33 @@ helm-template:
 helm-deploy: k8s-context
 	# These flags support migration from existing kubectl-managed manifests.
 	helm upgrade --install ecommerce-platform ./deploy/helm/ecommerce-platform --take-ownership --force-conflicts
+
+# Baseline variant for the thesis comparison: same chart and images in its own
+# namespace, without Istio sidecars, OPA or per-service database roles
+# (see deploy/helm/ecommerce-platform/values-baseline.yaml).
+BASELINE_NS ?= ecommerce-baseline
+
+baseline-deploy: k8s-context
+	kubectl create namespace $(BASELINE_NS) --dry-run=client -o yaml | kubectl apply -f -
+	kubectl label namespace $(BASELINE_NS) istio-injection=disabled --overwrite
+	helm upgrade --install ecommerce-baseline ./deploy/helm/ecommerce-platform --namespace $(BASELINE_NS) -f deploy/helm/ecommerce-platform/values-baseline.yaml --wait --timeout 10m
+
+# Open the baseline shop at http://localhost:8081.
+baseline-frontend:
+	kubectl -n $(BASELINE_NS) port-forward service/frontend 8081:8000
+
+baseline-delete:
+	helm uninstall ecommerce-baseline --namespace $(BASELINE_NS)
+	kubectl delete namespace $(BASELINE_NS)
+
+# Run the attack suite (tests/security) against both variants and compare.
+# REPEAT sets how often each attack is repeated.
+REPEAT ?= 10
+
+security-test:
+	python3 tests/security/run_attacks.py --namespace default --variant zero-trust --repeat $(REPEAT)
+	python3 tests/security/run_attacks.py --namespace $(BASELINE_NS) --variant baseline --repeat $(REPEAT)
+	python3 tests/security/compare.py
 
 istio-enable:
 	kubectl label namespace default istio-injection=enabled --overwrite

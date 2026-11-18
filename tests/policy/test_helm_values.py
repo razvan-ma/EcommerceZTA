@@ -47,3 +47,18 @@ def test_every_database_service_declares_its_tables() -> None:
     }
     for name in database_services:
         assert values["services"][name]["database"]["tables"], name
+
+
+def test_baseline_only_switches_off_zero_trust_controls() -> None:
+    """The baseline must differ from the Zero-Trust variant only in its controls,
+    so that the comparison measures the controls and nothing else."""
+    values = yaml.safe_load((CHART / "values.yaml").read_text())
+    baseline = yaml.safe_load((CHART / "values-baseline.yaml").read_text())
+    assert values["database"]["perServiceRoles"] is True
+    assert baseline == {
+        "database": {"perServiceRoles": False},
+        "opa": {"enabled": False},
+        "services": {"frontend": {"env": {"OPA_URL": "", "OPA_REQUIRED": "false"}}},
+    }
+    # Authentication stays on in the baseline.
+    assert values["services"]["frontend"]["env"]["AUTH_REQUIRED"] == "true"

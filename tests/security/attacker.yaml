@@ -1,0 +1,56 @@
+# Attacker workloads for the security suite (run_attacks.py applies and
+# deletes them). IMAGE is replaced with the product service image, which is
+# already on the node and ships Python.
+#
+#   attacker-no-mesh  a pod with no mesh identity at all (TM-05): no sidecar,
+#                     so it can only speak plaintext.
+#   attacker-mesh     a pod with a valid mesh identity (service account
+#                     "attacker") that no policy grants anything (TM-05).
+#
+# In the baseline namespace (istio-injection=disabled) neither gets a sidecar.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: attacker
+  labels:
+    role: security-test
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: attacker-no-mesh
+  labels:
+    app: attacker
+    role: security-test
+    sidecar.istio.io/inject: "false"
+spec:
+  serviceAccountName: attacker
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: attacker
+      image: IMAGE
+      imagePullPolicy: IfNotPresent
+      command: ["sleep", "infinity"]
+      resources:
+        requests: {cpu: 10m, memory: 32Mi}
+        limits: {cpu: 200m, memory: 128Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: attacker-mesh
+  labels:
+    app: attacker
+    role: security-test
+spec:
+  serviceAccountName: attacker
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: attacker
+      image: IMAGE
+      imagePullPolicy: IfNotPresent
+      command: ["sleep", "infinity"]
+      resources:
+        requests: {cpu: 10m, memory: 32Mi}
+        limits: {cpu: 200m, memory: 128Mi}

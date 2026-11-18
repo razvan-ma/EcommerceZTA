@@ -31,6 +31,14 @@ resources:
     cpu: 250m
     memory: 256Mi
 
+# Zero-Trust controls that the chart itself switches. The defaults are the
+# Zero-Trust variant; values-baseline.yaml turns them off for the comparison
+# baseline (docs/05-observability-and-evaluation-design.md, section 2).
+database:
+  # true: each service logs in as its own svc_<name> role (least privilege).
+  # false: every service shares the admin login (perimeter-style trust).
+  perServiceRoles: true
+
 # Credentials are not configured here. Helm generates them into Kubernetes
 # Secrets (templates/secrets.yaml) and reuses them on upgrade.
 postgres:
